@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+        <!-- Bootstrap CSS -->
+        <link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Google Icons -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+        <title>Finance Canvas - Home</title>
+    </head>
+    <body class="page-bg">
+     <div class="bg-nav d-flex flex-column flex-md-row align-items-center pb-0 mb-0 border-bottom">
+      <h5 class="m-3 mr-md-auto font-weight-normal text-light"><a href="/" class="text-dark" style="text-decoration : none,">Finance Canvas - {{ user_name }}</a></h5>
+
+      <nav class="m-2 my-md-0 mr-md-3">
+        <a class="py-2 m-2 text-dark" href="/home">Home</a>
+        <a class="py-2 m-2 text-dark" href="/budget">Budget</a>
+        <a class="py-2 m-2 text-dark" href="/analysis">Graphical Report</a>
+        <a class="py-2 m-2 text-dark" href="/profile">Profile</a>
+        <a class="py-2 m-2 text-dark" href="/contact">Contact Us</a>
+      </nav>
+         <a class="btn m-2" style="color: black; border-color: black;" href="/logout">Logout</a>
+    </div>
+     <div>
+        {% for message in get_flashed_messages() %}
+         <div class="alert alert-warning alert-dismissible fade show" id="alert" role="alert">
+                    {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+         {% endfor %}
+     </div>
+
+     <!-- Main container-->
+     <div class="container ">
+        <!-- Tiles row-->
+        <div class="container ">
+            <!-- Table records-->
+           <div  class="row mt-5">
+               <div class="col-md-12">
+                   <div class="row mt-5">
+                       <div class="col-md-4">
+                           <h4>Budget Records</h4>
+                       </div>
+                       <div class="col-md-8 text-right">
+                           <button type="button" data-toggle="modal" data-target="#add_budget" class="btn btn-primary btn-sm">New Budget</button>
+                       </div>
+                        
+                       <!-- Add new budget modal-->
+                        <div class="modal top fade mt-60" id="add_budget" tabindex="-1" aria-labelledby="exampleModalLabel"
+                               aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+                           <div class="modal-dialog" style="width: 400px;">
+                               <div class="modal-content text-center">
+                                   <div class="modal-header h5 text-white justify-content-center" style="background-color: #e5989b !important;">
+                                       Add New Budget
+                                   </div>
+                                   <div class="modal-body px-5">
+                                       <form class="form" method="post" action="/budget/add_budget" >
+                                           <input type="integer" class="form-control my-1" id="year" name="year" placeholder="Enter Year" required>
+                                           <input type="integer" class="form-control my-1" id="month" name="month" placeholder="Enter Month" required>
+                                           <input type="number" class="form-control my-1" id="amount" name="amount" placeholder="Enter Amount" required>
+                                           <select class="form-control my-1" name="e_type" required>
+                                               <option selected hidden value="None">Select Expense Type...</option>
+                                               <option value="Spend">Spend</option>
+                                           </select>
+                                           <input type="submit" class="btn my-2 btn-primary btn-block" id="add" name="add" value="Submit">
+                                       </form>
+                                   </div>
+                               </div>
+                           </div>
+                        </div>
+   
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                          <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-dark">
+                             <thead>
+                               <tr>
+                                 <th scope="col">#</th>
+                                 <th scope="col">Year</th>
+                                 <th scope="col">Month</th>
+                                 <th scope="col">Amount</th>
+                                 <th scope="col">Expense Type</th>
+                                 <th scope="col">Actions</th> 
+                               </tr>
+                             </thead>
+                             <tbody>
+                             {% for row in table_data %}
+                               <tr>
+                                 <th scope="row">{{ loop.index }}</th>
+                                 <td>{{ row[2] }}</td>
+                                 <td>{{ row[3] }}</td>
+                                 <td>{{ row[4] }}</td>
+                                 <td>{{ row[5] }}</td>
+                                 <td>
+                                   <form method="post" action="/budget/delete_budget">
+                                       <input type="hidden" name="budget_id" value="{{ row[0] }}">  <!-- Expense ID -->
+                                       <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                       <button type="button" class="btn btn-info btn-sm" onclick="openEditModal('{{ row[0] }}', '{{ row[2] }}', '{{ row[3] }}', '{{ row[4] }}', '{{ row[5] }}')">Edit</button>
+                                   </form>
+                                 </td>
+                               </tr>
+                             {% endfor %}
+                             </tbody>
+                            </table>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                
+                 <!-- Edit budget record modal -->
+               <div class="modal fade" id="edit_record" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                   <div class="modal-dialog modal-dialog-centered">
+                       <div class="modal-content">
+                           <div class="modal-header bg-primary text-white">
+                           <h5 class="modal-title">Edit Budget Record</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                           </div>
+                       <div class="modal-body">
+                           <form method="post" action="/budget/edit_budget">
+                               <input type="hidden" id="edit_budget_id" name="budget_id">                            
+                               <div class="mb-3">
+                                   <label for="edit_b_month" class="form-label">month</label>
+                                   <input type="number" class="form-control" id="edit_b_month" name="new_month" required>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="edit_b_amount" class="form-label">Amount</label>
+                                   <input type="number" class="form-control" id="edit_b_amount" name="new_amount" required>
+                               </div>                            
+                               <button type="submit" class="btn btn-primary">Save Changes</button>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        </div>
+
+     <div class="container">
+      <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+          <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
+          </a>
+          <span class="text-muted">2024 Finance Canvas | GWU</span>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript">
+        setTimeout(function () {
+                    // Closing the alert
+                    $('#alert').alert('close');
+                }, 3000);
+    </script>
+    <script>
+        function openEditModal(budget_id, year, month, amount, expense) {
+          document.getElementById('edit_budget_id').value = budget_id;
+          document.getElementById('edit_b_month').value = month;       
+          document.getElementById('edit_b_amount').value = amount;
+          
+          $('#edit_record').modal('show'); // Show the edit modal
+          }
+      </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+   <script src='https://cdn.plot.ly/plotly-latest.min.js'></script> <!-- Plotly CDN -->
+    </body>
+
+    
+</html>
