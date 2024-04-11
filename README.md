@@ -20,3 +20,5 @@ Project execution:
 1. Clone the repository
 2. Run the requirements file on the desired location: pip install -r requirements.txt
 3. Run the main file:  python main.py
+
+Demo link: https://drive.google.com/file/d/1_H51Upn3aEKHU9gJeZenN_D96aAW4CRa/view?usp=drive_link
