@@ -22,3 +22,4 @@ Project execution:
 3. Run the main file:  python main.py
 
 Demo link: https://drive.google.com/file/d/1_H51Upn3aEKHU9gJeZenN_D96aAW4CRa/view?usp=drive_link
+PPT link: G5 - Finance Canvas Presentation.pdf
