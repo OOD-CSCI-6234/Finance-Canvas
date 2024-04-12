@@ -23,3 +23,5 @@ Project execution:
 
 Demo link: https://drive.google.com/file/d/1_H51Upn3aEKHU9gJeZenN_D96aAW4CRa/view?usp=drive_link
 
+PPt link: https://github.com/OOD-CSCI-6234/Finance-Canvas/blob/main/G5%20-%20Finance%20Canvas%20Presentation.pdf
+
