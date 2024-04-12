@@ -11,7 +11,7 @@ Setting Budget to manage expenses
 Technologies Used:
 Python
 Flask
-SQLAlchemy
+SQLite3
 HTML/CSS
 Bootstrap
 
