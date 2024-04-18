@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <!-- Google Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
         <title>Finance Canvas - Home</title>
     </head>
@@ -50,7 +51,7 @@
                            <h4>Budget Records</h4>
                        </div>
                        <div class="col-md-8 text-right">
-                           <button type="button" data-toggle="modal" data-target="#add_budget" class="btn btn-primary btn-sm">New Budget</button>
+                           <button type="button" data-toggle="modal" data-target="#add_budget" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"> Add New Budget</i></button>
                        </div>
                         
                        <!-- Add new budget modal-->
@@ -58,14 +59,14 @@
                                aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
                            <div class="modal-dialog" style="width: 400px;">
                                <div class="modal-content text-center">
-                                   <div class="modal-header h5 text-white justify-content-center" style="background-color: #e5989b !important;">
+                                   <div class="modal-header h5 text-dark justify-content-center" style="background-color: #e5989b !important;">
                                        Add New Budget
                                    </div>
                                    <div class="modal-body px-5">
                                        <form class="form" method="post" action="/budget/add_budget" >
                                            <input type="integer" class="form-control my-1" id="year" name="year" placeholder="Enter Year" required>
                                            <input type="integer" class="form-control my-1" id="month" name="month" placeholder="Enter Month" required>
-                                           <input type="number" class="form-control my-1" id="amount" name="amount" placeholder="Enter Amount" required>
+                                           <input type="number" class="form-control my-1" id="amount" name="amount" step="any" placeholder="Enter Amount" required>
                                            <select class="form-control my-1" name="e_type" required>
                                                <option selected hidden value="None">Select Expense Type...</option>
                                                <option value="Spend">Spend</option>
@@ -80,9 +81,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                          <div class="table-container" style="max-height: 400px; overflow-y: auto;">
-                            <table class="table table-dark">
-                             <thead>
+                            <div class="table-container shadow " style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-striped table-hover ">
+                            <thead style="background-color: #e5989b;">
                                <tr>
                                  <th scope="col">#</th>
                                  <th scope="col">Year</th>
@@ -103,8 +104,8 @@
                                  <td>
                                    <form method="post" action="/budget/delete_budget">
                                        <input type="hidden" name="budget_id" value="{{ row[0] }}">  <!-- Expense ID -->
-                                       <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                       <button type="button" class="btn btn-info btn-sm" onclick="openEditModal('{{ row[0] }}', '{{ row[2] }}', '{{ row[3] }}', '{{ row[4] }}', '{{ row[5] }}')">Edit</button>
+                                       <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
+                                       <button type="button" class="btn btn-primary btn-sm" onclick="openEditModal('{{ row[0] }}', '{{ row[2] }}', '{{ row[3] }}', '{{ row[4] }}', '{{ row[5] }}')"><i class="bi bi-pencil-square"></i></button>
                                    </form>
                                  </td>
                                </tr>
@@ -120,7 +121,7 @@
                <div class="modal fade" id="edit_record" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                    <div class="modal-dialog modal-dialog-centered">
                        <div class="modal-content">
-                           <div class="modal-header bg-primary text-white">
+                           <div class="modal-header bh5 text-dark justify-content-center" style="background-color: #e5989b !important;">
                            <h5 class="modal-title">Edit Budget Record</h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                            </div>
@@ -133,7 +134,7 @@
                                </div>
                                <div class="mb-3">
                                    <label for="edit_b_amount" class="form-label">Amount</label>
-                                   <input type="number" class="form-control" id="edit_b_amount" name="new_amount" required>
+                                   <input type="number" class="form-control" id="edit_b_amount" step="any" name="new_amount" required>
                                </div>                            
                                <button type="submit" class="btn btn-primary">Save Changes</button>
                            </form>
