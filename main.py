@@ -323,6 +323,12 @@ def add_budget():
             expense = request.form.get('e_type')
             print(expense)
             try:
+                support.check_duplicate_budget(user_id, month, year)
+                # ... rest of your code to insert the budget ...
+            except ValueError as e:
+                flash(str(e))  # Flash the error message to the user
+                return redirect("/budget")
+            try:
                 # Check for existing budget for the same month/year
                 # query = """SELECT COUNT(*) FROM user_budgets WHERE user_id = {} AND month = {} AND year = {}""".format(
                 #     user_id, month, year)
