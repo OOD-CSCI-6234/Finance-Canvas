@@ -379,16 +379,16 @@ form.contFrm {
 }
 
 .goal-panel {
-    color:#ffff;
-    background: linear-gradient(
-       90deg, #2b2f33, #2b2f33
+  color:#ffff;
+  background: linear-gradient(
+     90deg, #3c353f, #d4a8d7
 
-    );
-    box-shadow:
-    -5px -5px 8px #264652,
-    5px 5px 8px #192f37;
-    border-radius: 15px;
-    overflow: hidden;
+  );
+  box-shadow:
+  -5px -5px 8px #949a9d,
+  5px 5px 8px #727d81;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .body2 {
