@@ -16,7 +16,7 @@ def connect_db():
         email VARCHAR(30) NOT NULL UNIQUE, password VARCHAR(20) NOT NULL)''')
     cur.execute(
         '''CREATE TABLE IF NOT EXISTS user_expenses (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, pdate DATE NOT 
-        NULL, expense VARCHAR(10) NOT NULL, amount INTEGER NOT NULL, pdescription VARCHAR(50), FOREIGN KEY (user_id) 
+        NULL, expense VARCHAR(10) NOT NULL, amount FLOAT NOT NULL, pdescription VARCHAR(50), FOREIGN KEY (user_id) 
         REFERENCES user_login(user_id))''')
     cur.execute(
         '''CREATE TABLE IF NOT EXISTS user_budgets (budget_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL,
@@ -214,6 +214,33 @@ def get_remaining_balance(user_id):
     finally:
         close_db(connection, cursor)
 
+def check_duplicate_budget(user_id, month, year):
+    """
+  This function checks if a budget for the specified month and year already exists for the given user.
+  Args:
+      user_id (int): The user ID to check for.
+      month (int): The month (1-12) to check.
+      year (int): The year to check.
+  Returns:
+      bool: True if a duplicate budget exists, False otherwise.
+  Raises:
+      ValueError: If the provided month or year is invalid.
+   """
+    
+    query = """
+    SELECT COUNT(*) AS count
+    FROM user_budgets
+    WHERE user_id = {} AND month = {} AND year = {};
+    """.format(user_id, month, year)
+
+    # Use support.execute_query to execute the query (assuming it's defined)
+    result = execute_query('search', query)
+
+    if result[0][0] > 0:
+        raise ValueError("Budget for this month already exists.")
+
+    return False
+
 
 def generate_Graph(df=None):
     """
@@ -272,7 +299,7 @@ def generate_Graph(df=None):
         return bar, pie, line, stack_bar
     return None
 
-piecolor= ['#AFF8DB','#B28DFF', '#6EB5FF', '#FFFFD1']
+piecolor= ['#F8F3EA','#0B1957','#FA9EBC','#FFDBD1']
 def makePieChart(df=None, expense='Earning', names='Note', values='Amount', hole=0.5,
                  color_discrete_sequence=piecolor, size=300, textposition='inside',
                  textinfo='percent+label', margin=2):
@@ -285,7 +312,7 @@ def makePieChart(df=None, expense='Earning', names='Note', values='Amount', hole
     fig.update(layout_showlegend=False)
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-barcolor= ['#AFF8DB','#B28DFF', '#6EB5FF', '#FFFFD1']
+barcolor= ['#F8F3EA','#0B1957','#FA9EBC','#FFDBD1']
 def meraBarChart(df=None, x=None, y=None, color=None, x_label=None, y_label=None, height=None, width=None,
                  show_legend=False, show_xtick=True, show_ytick=True, x_tickangle=0, y_tickangle=0, barmode='relative'):
     bar = px.bar(data_frame=df, x=x, y=y, color=color, color_discrete_sequence=barcolor, template="plotly_dark", barmode=barmode,
